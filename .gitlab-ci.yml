@@ -20,7 +20,7 @@ build for master:
   script:
     - pwd
     - ./gradlew clean build -x test --refresh-dependencies
-
+    - chmod +x gradlew
     - export ARTIFACTS_MASTER='/home/devops/artifacts/master'
     - ./gradlew wicc-mqtt-push-entity:upload
     - ./gradlew wicc-mqtt-push-commons:upload
