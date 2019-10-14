@@ -19,7 +19,6 @@ build for master:
     - .gradle
   script:
     - pwd
-    - chmod +x gradlew
     - ./gradlew clean build -x test --refresh-dependencies
 
     - export ARTIFACTS_MASTER='/home/devops/artifacts/master'
