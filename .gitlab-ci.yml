@@ -1,0 +1,57 @@
+variables:
+  CICD_HOME_DEV: '/home/devops/cicd_scripts/cicd'
+
+  WICC_MASTER_CONF_HOME_DEV: '/home/devops/cicd_scripts/conf/bet/master'
+  WICC_TEST_CONF_HOME_DEV: '/home/devops/cicd_scripts/conf/bet/test'
+
+  CI_DEBUG_TRACE: 'false'
+  WICC_VERSION: 0.200.8
+  JOBS_ADMIN_URL: 'http://autotest-jobs.wisedev.cn'
+  TASK_IP: 'dev.wisedev.cn'
+
+stages:
+  - build
+  - deploy
+
+build for master:
+  stage: deploy
+  cache:
+    paths:
+    - .gradle
+  script:
+    - pwd
+    - ./gradlew clean build -x test --refresh-dependencies
+
+    - export ARTIFACTS_MASTER='/home/devops/artifacts/master'
+    - ./gradlew wicc-mqtt-push-entity:upload
+    - ./gradlew wicc-mqtt-push-commons:upload
+    -
+    - cp ./wicc-mqtt-push-webapi/build/distributions/*.tar $ARTIFACTS_MASTER/wicc-mqtt-push-webapi.tar
+    - bash -x $CICD_HOME_DEV/deploy-bet-api.sh $WICC_MASTER_CONF_HOME_DEV/bet.conf wicc-mqtt-push-webapi 28001  master
+  tags:
+    - wicc-dev
+  only:
+    - master
+
+build for test:
+  stage: deploy
+  cache:
+    paths:
+    - .gradle
+  script:
+    - pwd
+    - sed -i -e 's/-SNAPSHOT/-TEST/g' ./build.gradle
+    - sed -i -e 's/-SNAPSHOT/-TEST/g' ./*/build.gradle
+
+    - ./gradlew clean build -x test --refresh-dependencies
+    - ./gradlew wicc-mqtt-push-entity:upload
+    - ./gradlew wicc-mqtt-push-commons:upload
+
+    - export ARTIFACTS_TEST='/home/devops/artifacts/test'
+
+    - cp ./wicc-mqtt-push-webapi/build/distributions/*.tar $ARTIFACTS_TEST/wicc-mqtt-push-webapi.tar
+    - bash -x $CICD_HOME_DEV/deploy-bet-api.sh $WICC_TEST_CONF_HOME_DEV/bet.conf wicc-mqtt-push-webapi 28001  test
+  tags:
+    - wicc-test
+  only:
+    - test

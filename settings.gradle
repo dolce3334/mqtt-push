@@ -1,0 +1,7 @@
+rootProject.name = 'wicc-mqtt-push-svc'
+
+include 'wicc-mqtt-push-webapi'
+include 'wicc-mqtt-push-entity'
+include 'wicc-mqtt-push-commons'
+include 'wicc-mqtt-push-xservice'
+include 'wicc-mqtt-push-task'
