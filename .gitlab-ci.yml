@@ -32,6 +32,7 @@ build for master:
   only:
     - master
 
+
 build for test:
   stage: deploy
   cache:
