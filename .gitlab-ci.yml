@@ -10,7 +10,6 @@ variables:
   TASK_IP: 'dev.wisedev.cn'
 
 stages:
-  - build
   - deploy
 
 build for master:
@@ -25,9 +24,9 @@ build for master:
     - export ARTIFACTS_MASTER='/home/devops/artifacts/master'
     - ./gradlew wicc-mqtt-push-entity:upload
     - ./gradlew wicc-mqtt-push-commons:upload
-    -
+
     - cp ./wicc-mqtt-push-webapi/build/distributions/*.tar $ARTIFACTS_MASTER/wicc-mqtt-push-webapi.tar
-    - bash -x $CICD_HOME_DEV/deploy-bet-api.sh $WICC_MASTER_CONF_HOME_DEV/bet.conf wicc-mqtt-push-webapi 28001  master
+    - bash -x $CICD_HOME_DEV/deploy-bet-api.sh $WICC_MASTER_CONF_HOME_DEV/report-sync.conf wicc-mqtt-push-webapi 28001  master
   tags:
     - wicc-dev
   only:
@@ -43,14 +42,15 @@ build for test:
     - sed -i -e 's/-SNAPSHOT/-TEST/g' ./build.gradle
     - sed -i -e 's/-SNAPSHOT/-TEST/g' ./*/build.gradle
 
+    - export ARTIFACTS_TEST='/home/devops/artifacts/test'
     - ./gradlew clean build -x test --refresh-dependencies
     - ./gradlew wicc-mqtt-push-entity:upload
     - ./gradlew wicc-mqtt-push-commons:upload
 
-    - export ARTIFACTS_TEST='/home/devops/artifacts/test'
+
 
     - cp ./wicc-mqtt-push-webapi/build/distributions/*.tar $ARTIFACTS_TEST/wicc-mqtt-push-webapi.tar
-    - bash -x $CICD_HOME_DEV/deploy-bet-api.sh $WICC_TEST_CONF_HOME_DEV/bet.conf wicc-mqtt-push-webapi 28001  test
+    - bash -x $CICD_HOME_DEV/deploy-bet-api.sh $WICC_TEST_CONF_HOME_DEV/report-sync.conf wicc-mqtt-push-webapi 28001  test
   tags:
     - wicc-test
   only:
