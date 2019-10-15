@@ -1,0 +1,66 @@
+bootRepackage.enabled = false
+
+apply plugin: "com.waykichain.utils.codegen"
+apply plugin: 'kotlin'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+buildscript {
+    ext.kotlin_version = '1.2.50'
+
+    repositories {
+        maven { url "http://nexus.wisedev.cn/content/groups/public" }
+        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "gradle.plugin.com.waykichain.utils.codegen:querydsl-plugin:1.2.27"
+
+    }
+}
+
+dependencies {
+}
+
+jar {
+    baseName = 'wicc-mqtt-push-message'
+    version = "$version"
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "http://nexus.wisedev.cn/content/repositories/2ndparty") {
+                authentication(userName: 'deployment', password: 'deployment123')
+            }
+            snapshotRepository(url: "http://nexus.wisedev.cn/content/repositories/2ndparty-snapshots/") {
+                authentication(userName: 'deployment', password: 'deployment123')
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+compileKotlin {
+    kotlinOptions {
+
+        jvmTarget = "1.8"
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
