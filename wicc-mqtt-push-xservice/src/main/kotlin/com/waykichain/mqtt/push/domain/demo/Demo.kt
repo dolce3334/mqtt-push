@@ -4,7 +4,7 @@ import com.waykichain.mqtt.push.domain.client.PublishClient
 import com.waykichain.mqtt.push.domain.client.info.AccountClientInfo
 import com.waykichain.mqtt.push.domain.client.info.MqttUserInfo
 import com.waykichain.mqtt.push.domain.environment.Environment
-import com.waykichain.mqtt.push.domain.message.account.AccountMsg
+import com.waykichain.mqtt.push.message.account.AccountMsg
 
 object Demo {
 

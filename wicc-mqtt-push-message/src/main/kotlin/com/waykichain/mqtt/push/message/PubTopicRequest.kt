@@ -1,4 +1,4 @@
-package com.waykichain.mqtt.push.commons.biz.domain
+package com.waykichain.mqtt.push.message
 
 /**
  * @ClassName: PubTopicRequest
@@ -6,7 +6,7 @@ package com.waykichain.mqtt.push.commons.biz.domain
  */
 class PubTopicRequest {
 
-    var content: String? = null
+    var mqttMsg: MqttMsg? = null
 
     var pubClientType: Int? = null
 

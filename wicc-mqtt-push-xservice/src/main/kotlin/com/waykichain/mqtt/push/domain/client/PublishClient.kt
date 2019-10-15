@@ -1,7 +1,7 @@
 package com.waykichain.mqtt.push.domain.client
 
 import com.waykichain.mqtt.push.domain.client.info.ClientInfo
-import com.waykichain.mqtt.push.domain.message.MqttMsg
+import com.waykichain.mqtt.push.message.MqttMsg
 import org.eclipse.paho.client.mqttv3.MqttException
 import org.eclipse.paho.client.mqttv3.MqttMessage
 import org.slf4j.LoggerFactory

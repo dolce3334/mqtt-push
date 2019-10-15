@@ -27,6 +27,7 @@ jar {
 dependencies {
     compile 'com.waykichain:wicc-commons:0.3.2-SNAPSHOT'
     compile project(':wicc-mqtt-push-commons')
+    compile project(':wicc-mqtt-push-message')
 }
 
 uploadArchives {

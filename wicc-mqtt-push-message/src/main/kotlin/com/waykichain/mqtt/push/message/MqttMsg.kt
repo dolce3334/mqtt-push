@@ -1,4 +1,4 @@
-package com.waykichain.mqtt.push.domain.message
+package com.waykichain.mqtt.push.message
 
 import com.alibaba.fastjson.JSON
 

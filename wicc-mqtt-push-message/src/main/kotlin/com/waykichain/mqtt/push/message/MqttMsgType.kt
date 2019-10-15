@@ -1,4 +1,4 @@
-package com.waykichain.mqtt.push.domain.dict
+package com.waykichain.mqtt.push.message
 
 /**
  * @ClassName: MqttMsgType
