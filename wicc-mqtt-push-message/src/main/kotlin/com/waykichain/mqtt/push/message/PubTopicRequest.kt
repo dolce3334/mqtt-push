@@ -19,8 +19,8 @@ class PubTopicRequest {
     @ApiModelProperty("发送消息的话题")
     var topic: String? = null
 
-    @ApiModelProperty("发送的消息类型")
-    var mqttMsgType: Int? = null
+//    @ApiModelProperty("发送的消息类型")
+//    var mqttMsgType: Int? = null
 
     @ApiModelProperty("发布话题质量")
     var qos: Int? = null

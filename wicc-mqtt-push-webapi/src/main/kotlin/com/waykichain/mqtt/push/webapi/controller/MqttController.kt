@@ -26,7 +26,7 @@ class MqttController {
     fun publishTopic(@RequestBody request: PubTopicRequest): BizResponse<*> {
 
         /**获取对应发送消息的客户端，同时添加定制信息*/
-        val clientInfo = PubClientType.getClientInfoByMsgType(request.mqttMsgType!!)
+        val clientInfo = PubClientType.getClientInfoByMsgType(request.mqttMsg!!.msgType)
         if (request.topic != null) {
             clientInfo.topic = clientInfo.topic + "/" + request.topic
         }
