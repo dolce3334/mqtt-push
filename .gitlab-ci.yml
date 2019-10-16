@@ -24,6 +24,7 @@ build for master:
     - export ARTIFACTS_MASTER='/home/devops/artifacts/master'
     - ./gradlew wicc-mqtt-push-entity:upload
     - ./gradlew wicc-mqtt-push-commons:upload
+    - ./gradlew wicc-mqtt-push-message:upload
 
     - cp ./wicc-mqtt-push-webapi/build/distributions/*.tar $ARTIFACTS_MASTER/wicc-mqtt-push-webapi.tar
     - bash -x $CICD_HOME_DEV/deploy-bet-api.sh $WICC_MASTER_CONF_HOME_DEV/report-sync.conf wicc-mqtt-push-webapi 28001  master
@@ -47,6 +48,7 @@ build for test:
     - ./gradlew clean build -x test --refresh-dependencies
     - ./gradlew wicc-mqtt-push-entity:upload
     - ./gradlew wicc-mqtt-push-commons:upload
+    - ./gradlew wicc-mqtt-push-message:upload
 
 
 

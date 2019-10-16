@@ -19,51 +19,42 @@ enum class PubClientType(val code: Int, val type: String, val description: Strin
 
 
     companion object {
-        fun getClientInfoByClientId(code: Int): ClientInfo {
-            val mqttUserInfo = getMqttUserInfoByClientId(code)
-            return when (code) {
-                CUSTOMER.code -> CustomerClientInfo(Environment.MQTT_BROKER, mqttUserInfo)
-                ACCOUNT.code -> AccountClientInfo(Environment.MQTT_BROKER, mqttUserInfo)
-                DATA.code -> DataClientInfo(Environment.MQTT_BROKER, mqttUserInfo)
-                ACTIVITY.code -> ActivityClientInfo(Environment.MQTT_BROKER, mqttUserInfo)
-                OFFICIALS.code -> OfficialsClientInfo(Environment.MQTT_BROKER, mqttUserInfo)
-                else -> throw BizException(ErrorCode.REQUEST_PARAM_ERROR)
-            }
-        }
 
-        fun getMqttUserInfoByClientId(code: Int): MqttUserInfo {
+        fun getClientInfoByMsgType(mqttMsgType: Int): ClientInfo {
             val mqttUserInfo = MqttUserInfo()
-            when (code) {
-                CUSTOMER.code -> {
+            return when (mqttMsgType) {
+                in 100.rangeTo(199) -> {
                     mqttUserInfo.clientId = "customerClient"
                     mqttUserInfo.userName = Environment.MQTT_USER_CUSTOMER
                     mqttUserInfo.password = Environment.MQTT_PSSSWORD_CUSTOMER
+                    CustomerClientInfo(Environment.MQTT_BROKER, mqttUserInfo)
                 }
-                ACCOUNT.code -> {
+                in 200.rangeTo(299) -> {
                     mqttUserInfo.clientId = "accountClient"
                     mqttUserInfo.userName = Environment.MQTT_USER_ACCOUNT
                     mqttUserInfo.password = Environment.MQTT_PSSSWORD_ACCOUNT
+                    AccountClientInfo(Environment.MQTT_BROKER, mqttUserInfo)
                 }
-                DATA.code -> {
+                in 300.rangeTo(399) -> {
                     mqttUserInfo.clientId = "dataClient"
                     mqttUserInfo.userName = Environment.MQTT_USER_DATA
                     mqttUserInfo.password = Environment.MQTT_PSSSWORD_DATA
+                    DataClientInfo(Environment.MQTT_BROKER, mqttUserInfo)
                 }
-                ACTIVITY.code -> {
+                in 400.rangeTo(499) -> {
                     mqttUserInfo.clientId = "activityClient"
                     mqttUserInfo.userName = Environment.MQTT_USER_ACTIVITY
                     mqttUserInfo.password = Environment.MQTT_PSSSWORD_ACTIVITY
+                    ActivityClientInfo(Environment.MQTT_BROKER, mqttUserInfo)
                 }
-                OFFICIALS.code -> {
+                in 500.rangeTo(599) -> {
                     mqttUserInfo.clientId = "officialsClient"
                     mqttUserInfo.userName = Environment.MQTT_USER_OFFICIALS
                     mqttUserInfo.password = Environment.MQTT_PSSSWORD_OFFICIALS
+                    OfficialsClientInfo(Environment.MQTT_BROKER, mqttUserInfo)
                 }
                 else -> throw BizException(ErrorCode.REQUEST_PARAM_ERROR)
             }
-            return mqttUserInfo
         }
-
     }
-
 }

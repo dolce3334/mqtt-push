@@ -21,17 +21,12 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class MqttController {
 
-    /**
-     * 请求体为要发布话题的负载payload（二进制字节流）
-     * 请求头包含必选参数 PubClientType  topic  MqttMsgType
-     * 请求头可选参数 OQS
-     */
     @ApiOperation("发布话题", httpMethod = "POST")
     @RequestMapping("/pub")
     fun publishTopic(@RequestBody request: PubTopicRequest): BizResponse<*> {
 
         /**获取对应发送消息的客户端，同时添加定制信息*/
-        val clientInfo = PubClientType.getClientInfoByClientId(request.pubClientType!!)
+        val clientInfo = PubClientType.getClientInfoByMsgType(request.mqttMsgType!!)
         if (request.topic != null) {
             clientInfo.topic = clientInfo.topic + "/" + request.topic
         }

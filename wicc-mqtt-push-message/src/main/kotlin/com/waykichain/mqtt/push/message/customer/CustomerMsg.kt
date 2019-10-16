@@ -8,4 +8,6 @@ import com.waykichain.mqtt.push.message.MqttMsgType
  * @Date: 2019/9/20 14:42
  */
 class CustomerMsg: MqttMsg(MqttMsgType.CUSTOMER.code) {
+    var name: String? = null
+    var age: Int? = null
 }
