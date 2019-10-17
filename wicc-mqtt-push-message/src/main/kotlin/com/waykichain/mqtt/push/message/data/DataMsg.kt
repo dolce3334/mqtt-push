@@ -2,10 +2,16 @@ package com.waykichain.mqtt.push.message.data
 
 import com.waykichain.mqtt.push.message.MqttMsg
 import com.waykichain.mqtt.push.message.MqttMsgType
+import com.waykichain.mqtt.push.message.customer.CustomerMsg
+import org.springframework.stereotype.Service
 
 /**
  * @ClassName: DataMsg
  * @Date: 2019/9/20 14:42
  */
-class DataMsg: MqttMsg(MqttMsgType.DATA.code) {
+@Service
+class DataMsg: MqttMsg<DataMsg>(MqttMsgType.DATA.code) {
+    init {
+        register(this.msgType, this)
+    }
 }

@@ -2,10 +2,16 @@ package com.waykichain.mqtt.push.message.officials
 
 import com.waykichain.mqtt.push.message.MqttMsg
 import com.waykichain.mqtt.push.message.MqttMsgType
+import com.waykichain.mqtt.push.message.customer.CustomerMsg
+import org.springframework.stereotype.Service
 
 /**
  * @ClassName: OfficialsMsg
  * @Date: 2019/9/20 14:44
  */
-class OfficialsMsg: MqttMsg(MqttMsgType.OFFICIALS.code) {
+@Service
+class OfficialsMsg: MqttMsg<OfficialsMsg>(MqttMsgType.OFFICIALS.code) {
+    init {
+        register(this.msgType, this)
+    }
 }

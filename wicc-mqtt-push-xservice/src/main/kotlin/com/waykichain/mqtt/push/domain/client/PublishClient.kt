@@ -12,14 +12,13 @@ import org.slf4j.LoggerFactory
  */
 object PublishClient {
 
-    fun publishTopic(clientInfo: ClientInfo, message: MqttMsg) {
+    fun publishTopic(clientInfo: ClientInfo, message: MqttMsg<*>) {
 
         try {
             val client = clientInfo.client
             client.connect(clientInfo.connOpts)
 
             val mqttMessage = MqttMessage(message.toString().toByteArray())
-//            val mqttMessage = MqttMessage(message.content)
 
             mqttMessage.qos = clientInfo.qos
 
