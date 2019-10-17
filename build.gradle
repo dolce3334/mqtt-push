@@ -10,7 +10,7 @@ allprojects {
         slf4jVersion = '1.7.24'
         querydslVersion = '4.1.4'
         hibernateVersion = '5.4.1.Final'
-        wiccVersion = '0.1800.5-SNAPSHOT'
+        wiccVersion = '0.1800.6-SNAPSHOT'
 
     }
 

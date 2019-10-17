@@ -26,4 +26,14 @@ enum class MqttMsgType(val code: Int, val desp: String, val className: String) {
     /**官方消息 type为 500-599*/
     OFFICIALS(    500, "官方消息", "com.waykichain.mqtt.push.message.officials.OfficialsMsg");
 
+
+    companion object {
+        fun getMqttMsgTypeByCode(code: Int): MqttMsgType? {
+            values().forEach {
+                if (it.code == code) return it
+            }
+            return null
+        }
+    }
+
 }
