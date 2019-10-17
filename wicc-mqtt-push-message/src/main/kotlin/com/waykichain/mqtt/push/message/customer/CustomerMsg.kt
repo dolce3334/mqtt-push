@@ -2,7 +2,6 @@ package com.waykichain.mqtt.push.message.customer
 
 import com.waykichain.mqtt.push.message.MqttMsg
 import com.waykichain.mqtt.push.message.MqttMsgType
-import com.waykichain.mqtt.push.message.account.AccountMsg
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
@@ -13,9 +12,6 @@ import java.math.BigDecimal
 @Service
 class CustomerMsg: MqttMsg<CustomerMsg>(MqttMsgType.CUSTOMER.code) {
 
-    init {
-        register(this.msgType, this)
-    }
 
     var name: String? = null
     var age: Int? = null

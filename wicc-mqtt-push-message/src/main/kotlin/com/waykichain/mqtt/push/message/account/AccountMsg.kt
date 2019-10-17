@@ -2,7 +2,6 @@ package com.waykichain.mqtt.push.message.account
 
 import com.waykichain.mqtt.push.message.MqttMsg
 import com.waykichain.mqtt.push.message.MqttMsgType
-import com.waykichain.mqtt.push.message.activity.ActivityMsg
 import org.springframework.stereotype.Service
 
 /**
@@ -11,9 +10,5 @@ import org.springframework.stereotype.Service
  */
 @Service
 class AccountMsg: MqttMsg<AccountMsg>(MqttMsgType.ACCOUNT.code) {
-
-    init {
-        register(this.msgType, this)
-    }
 
 }

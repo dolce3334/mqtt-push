@@ -34,6 +34,8 @@ class MqttController {
 
         val mqttMsg  = MqttMsg.getMsg(request.mqttMsgType!!)!!.build(request.mqttMsg!!)
 
+        println(mqttMsg)
+
         /**话题发布*/
         PublishClient.publishTopic(clientInfo, mqttMsg)
         return BizResponse("")

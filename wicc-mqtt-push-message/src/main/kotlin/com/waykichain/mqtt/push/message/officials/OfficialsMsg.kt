@@ -2,7 +2,6 @@ package com.waykichain.mqtt.push.message.officials
 
 import com.waykichain.mqtt.push.message.MqttMsg
 import com.waykichain.mqtt.push.message.MqttMsgType
-import com.waykichain.mqtt.push.message.customer.CustomerMsg
 import org.springframework.stereotype.Service
 
 /**
@@ -11,7 +10,5 @@ import org.springframework.stereotype.Service
  */
 @Service
 class OfficialsMsg: MqttMsg<OfficialsMsg>(MqttMsgType.OFFICIALS.code) {
-    init {
-        register(this.msgType, this)
-    }
+
 }

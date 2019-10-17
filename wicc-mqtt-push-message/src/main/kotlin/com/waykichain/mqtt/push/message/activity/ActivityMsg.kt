@@ -10,7 +10,5 @@ import org.springframework.stereotype.Service
  */
 @Service
 class ActivityMsg: MqttMsg<ActivityMsg>(MqttMsgType.ACTIVITY.code) {
-    init {
-        register(this.msgType, this)
-    }
+
 }

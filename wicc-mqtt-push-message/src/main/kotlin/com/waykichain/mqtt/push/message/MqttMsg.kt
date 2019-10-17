@@ -6,7 +6,9 @@ import com.alibaba.fastjson.JSON
  * @ClassName: MqttMsg
  * @Date: 2019/9/20 10:53
  */
-abstract class MqttMsg<T : MqttMsg<T>>(var msgType: Int) {
+abstract class MqttMsg<T : MqttMsg<T>> {
+
+    var msgType: Int? = null
 
     companion object {
         var mqttMsgMap: MutableMap<Int, MqttMsg<*>> = mutableMapOf()
@@ -20,10 +22,9 @@ abstract class MqttMsg<T : MqttMsg<T>>(var msgType: Int) {
         }
     }
 
-    init {
-        register(this.msgType, this)
+    constructor(msgType: Int) {
+        register(msgType, this)
     }
-
 
     fun build(mqttMsg: Any): T{
         return JSON.parseObject(JSON.toJSONString(mqttMsg), this.javaClass) as T
