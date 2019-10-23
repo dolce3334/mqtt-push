@@ -19,6 +19,7 @@ enum class MqttMsgType(val code: Int, val desp: String, val className: String) {
     DATA(         300, "数据相关消息", "com.waykichain.mqtt.push.message.data.DataMsg"),
     DATA_DICE_LOTTERY_INFO_MSG(301, "dice游戏开奖信息", "com.waykichain.mqtt.push.message.data.DataDiceLotteryInfoMsg"),
     DATA_DICE_JACKPOT_INFO_MSG(302, "dice游戏奖池信息", "com.waykichain.mqtt.push.message.data.DataDiceJackpotInfoMsg"),
+    DATA_DICE_TOP_PRIZE_INFO_MSG(303, "dice游戏大奖信息", "com.waykichain.mqtt.push.message.data.DataDiceTopPrizeInfoMsg"),
 
     /**活动相关消息 type为 400-499*/
     ACTIVITY(     400, "活动相关消息", "com.waykichain.mqtt.push.message.activity.ActivityMsg"),
