@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest
 @ControllerAdvice
 open class ApiResponseHandler : ResponseBodyAdvice<Any> {
 
-    override fun beforeBodyWrite(body: Any, returnType: MethodParameter?, selectedContentType: MediaType?,
+    override fun beforeBodyWrite(body: Any?, returnType: MethodParameter?, selectedContentType: MediaType?,
                                  selectedConverterType: Class<out HttpMessageConverter<*>>?,
                                  request: ServerHttpRequest?, response: ServerHttpResponse?): Any? {
         if (!request!!.uri.toString().contains("swagger") && request.uri.toString().contains("api-docs")) {
@@ -48,7 +48,7 @@ open class ApiResponseHandler : ResponseBodyAdvice<Any> {
 //        }
         //TODO 此处需记录系统请求日志，表需要对应生成
 
-        return JSONObject.parseObject(result, body.javaClass)
+        return JSONObject.parseObject(result, body?.javaClass)
 
     }
 
