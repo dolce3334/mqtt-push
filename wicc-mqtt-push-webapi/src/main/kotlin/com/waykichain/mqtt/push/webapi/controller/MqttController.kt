@@ -33,6 +33,7 @@ class MqttController {
         if (request.qos != null) clientInfo.qos = request.qos!!
 
         val mqttMsg  = MqttMsg.getMsg(request.mqttMsgType!!)!!.build(request.mqttMsg!!)
+        mqttMsg.msgType = request.mqttMsgType
 
         println(mqttMsg)
 
