@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
 @Service
-class DataDiceJackpotInfoMsg: MqttMsg<DataDiceJackpotInfoMsg>(MqttMsgType.DATA_DICE_LOTTERY_INFO_MSG.code) {
+class DataDiceJackpotInfoMsg: MqttMsg<DataDiceJackpotInfoMsg>(MqttMsgType.DATA_DICE_JACKPOT_INFO_MSG.code) {
 
     @ApiModelProperty(value = "奖池金额")
     var jackpotAmount: BigDecimal? = null
