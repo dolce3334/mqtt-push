@@ -18,7 +18,9 @@ abstract class MqttMsg<T : MqttMsg<T>> {
         }
 
         fun getMsg(msgType: Int): MqttMsg<*>? {
-            return mqttMsgMap[msgType]
+            val msg = mqttMsgMap[msgType]
+            msg!!.msgType = msgType
+            return msg
         }
     }
 
