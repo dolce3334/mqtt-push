@@ -1,44 +1,76 @@
-# wicc-sample-svc
 
-克隆项目后，改造成新项目，需依次执行如下操作（以wicc-sample-svc项目为例）：
-1、右上角project structure里面修改project name 为 wicc-sample-svc
-   或者打开.idea目录，修改.name文件内容
+定制并发布一条消息的步骤：
+第一步：MqttMsgType中新增一种消息类型
+DATA_DICE_LOTTERY_INFO_MSG(301, "dice游戏开奖信息", "com.waykichain.mqtt.push.message.data.DataDiceLotteryInfoMsg"),
 
-2、修改顶部名称为 wicc-sample-svc，修改 settings.gradle 文件中的 rootProject.name 为 wicc-sample-svc
+第一个是消息的标识，用于解析消息体用；
+第二个是消息说明，管理后台模拟推送消息会用于展示；
+第三个是类名，是用于管理后台反射获取类的变量；
 
-3、rename module com.waykichain.wicc-demo-commons com.waykichain.wicc-sample-commons
-   rename module com.waykichain.wicc-demo-entity com.waykichain.wicc-sample-entity
-   rename module com.waykichain.wicc-demo-webapi com.waykichain.wicc-sample-webapi
-   rename module com.waykichain.wicc-demo-xservice com.waykichain.wicc-sample-xservice
+第二步：定义消息内容
+@Service
+class DataDiceLotteryInfoMsg: MqttMsg<DataDiceLotteryInfoMsg>(MqttMsgType.DATA_DICE_LOTTERY_INFO_MSG.code) {
+    @ApiModelProperty(value = "区块高度")
+    var lotteryHashHeight: Long? = null
 
-4、修改 settings.gradle 文件中的 include 'demo' 全部替换为 'sample'
-   修改weiapi中的 build.gradle 中的依赖 wicc-demo-commons 为 wicc-sample-commons
+    @ApiModelProperty(value = "区块hash")
+    var lotteryHash: String? = null
 
-5、关闭项目，修改四个目录名称，并重新打开项目
+    @ApiModelProperty(value = "开奖号码")
+    var  lotteryNum: Int? = 0
 
-6、修改每个module下面的包名
+    @ApiModelProperty(value = "开奖时间")
+    var lotteryAt: Date? = null
+}
 
-7、对应每个module所需的修改
- webapi： 修改包名
-          修改BaseController（按需修改）
-          修改拦截器，主要包含token校验
-          启动后执行的任务，如不需要则无需修改
-          修改Application.kt中MapperScanner扫描Mybatis的Mapper路径
-          修改application.yml中的Mybatis的xml文件路径
 
- entity: 主要是修改包名和 build.gradle 文件中的配置
-            baseName = 'wicc-sample-entity'
-            jdbcUrl
-            domainPackageName
-            repositoryPackageName
-            serviceSrcPath
-            servicePackageName
+泛型是为了获取类本身，构造函数传入msgType，里面的变量就是自己定义的要发送的消息
 
- xservice: 修改包名
-            修改 build.gradle 配置
+第三步，更新gradle版本，需要推送的地方更新一下依赖
+compile 'com.waykichain:wicc-mqtt-push-message:0.1800.13-SNAPSHOT'
 
- commons: 修改包名
-          修改build.gradle文件的的依赖和包名配置
-          修改数据库配置
-          修改Environment中的url等配置
-          ApiResponseHandler中需手动修改日志记录
+
+第四步，编写应用推送方法
+fun pubLotteryMsg(lotteryRecord: DiceLotteryRecord) {
+    val client = JsonRpcClient(Environment.MQTT_PUB_URL, true)
+
+    val msg = DataDiceLotteryInfoMsg()
+    val dsf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    msg.lotteryAt = dsf.format(lotteryRecord.createdAt)
+    msg.lotteryHash = lotteryRecord.lotteryHash
+    msg.lotteryHashHeight = lotteryRecord.lotteryHashHeight
+    msg.lotteryNum = lotteryRecord.lotteryNum
+
+    val request = PubTopicRequest()
+    request.mqttMsg = msg
+    request.mqttMsgType = MqttMsgType.DATA_DICE_LOTTERY_INFO_MSG.code
+
+    client.executeJsonPost(request, BizResponse::class.java)
+}
+
+
+主要内容是构造要发送的消息DataDiceLotteryInfoMsg并赋值，构造http请求PubTopicRequest传入msg和mqttMsgType ，然后发送http请求即可，接口地址测试时用http://10.0.0.4:28001/mqtt/pub
+
+
+PubTopicRequest这里做一下说明
+@ApiModel
+class PubTopicRequest {
+
+    @ApiModelProperty("发布改消息内容")
+    var mqttMsg: Any? = null
+
+    @ApiModelProperty("发送消息的话题")
+    var topic: String? = null
+
+    @ApiModelProperty("发送的消息类型")
+    var mqttMsgType: Int? = null
+
+    @ApiModelProperty("发布话题质量")
+    var qos: Int? = null
+}
+
+
+mqttMsg：这个是为了统一推送的接口，用这个接收要推送的消息，用反射还原发送的消息；
+topic：每个消息都属于一个话题，目前设定的100-599类型的消息根据其区间设定了固定的话题，如果是一对一推送这里后面需要添加玩家的地址以区分，其他情况下有提供的默认值即可，不需要传参；
+mqttMsgType：要发送的消息的类别，区分消息用的；
+qos：这个是发布消息的质量，有提供默认值，这里是指消息推送到服务器的质量，0代表不一定能接收到，1代表至少接收到1次，2代表保证接收到1次。
